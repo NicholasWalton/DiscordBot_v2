@@ -28,10 +28,16 @@ dependencies {
 
 //    classpath "com.github.nullstress:DependencyAnalysisPlugin:1.0.3"
     implementation 'org.javacord:javacord:3.8.0'
+    implementation 'org.javacord:javacord-api:3.8.0'
     implementation 'net.aksingh:owm-japis:2.5.3.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'org.mockito:mockito-core:3.4.0'
     implementation 'org.springframework.boot:spring-boot-starter-webflux:2.4.1'
+    implementation 'org.springframework:spring-web:5.3.2'
+    implementation 'org.springframework:spring-webflux:5.3.2'
+    implementation 'io.projectreactor:reactor-core:3.4.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+    testImplementation 'junit:junit:4.10'
 }
 
 
