@@ -2,10 +2,10 @@
 plugins {
     id 'java'
     id 'application'
-    id 'nebula.lint' version '19.0.2'
+//    id 'nebula.lint' version '19.0.2'
 }
 
-gradleLint.rules += 'unused-dependency'
+//gradleLint.rules += 'unused-dependency'
 
 
 repositories {
