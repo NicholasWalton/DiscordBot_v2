@@ -1,6 +1,5 @@
 package org.jointheleague;
 
-import org.javacord.api.util.logging.FallbackLoggerConfiguration;
 import org.jointheleague.discord_bot.DiscordBot;
 
 import java.util.concurrent.ExecutionException;

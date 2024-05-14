@@ -1,8 +1,19 @@
 package org.jointheleague.discord_bot;
 
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.intent.Intent;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+
 import org.javacord.api.entity.message.Message;
 import org.jointheleague.features.abstract_classes.Feature;
 import org.jointheleague.features.examples.second_features.HighLowGame;
@@ -21,7 +32,7 @@ public class DiscordBot {
 
 	private String channelName;
 
-	DiscordApi api;
+	JDA api;
 
 	HelpListener helpListener;
 
@@ -32,14 +43,10 @@ public class DiscordBot {
 	}
 
 	public void connect(boolean printInvite) throws ExecutionException, InterruptedException {
-
-		api = new DiscordApiBuilder().setToken(token)
-				.addIntents(Intent.MESSAGE_CONTENT)
-				.login()
-				.join();
-
-		System.out.println(api.getIntents());
-		System.out.println(api.requestApplicationInfo().get());
+		api = JDABuilder.createDefault(token)
+				.enableIntents(GatewayIntent.MESSAGE_CONTENT) // enables explicit access to message.getContentDisplay()
+				.build();
+		api.awaitReady();
 
 		//Print the URL to invite the bot
 		if (printInvite) {
