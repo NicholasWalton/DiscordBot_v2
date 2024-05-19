@@ -2,7 +2,7 @@ package org.jointheleague.features.examples.first_features;
 
 import java.util.Random;
 
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.abstract_classes.Feature;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 
@@ -16,8 +16,8 @@ public class RandomNumber extends Feature {
     }
 
     @Override
-    public void handle(MessageCreateEvent event) {
-        String messageContent = event.getMessageContent();
+    public void handle(MessageReceivedEvent event) {
+        String messageContent = event.getMessage().getContentStripped();
         if (messageContent.startsWith(COMMAND)) {
             Random r = new Random();
             event.getChannel().sendMessage("Your random number is " + r.nextInt(1001));

@@ -1,6 +1,6 @@
 package org.jointheleague.features.templates;
 
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.abstract_classes.Feature;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 
@@ -19,8 +19,8 @@ public class FeatureTemplate extends Feature {
     }
 
     @Override
-    public void handle(MessageCreateEvent event) {
-        String messageContent = event.getMessageContent();
+    public void handle(MessageReceivedEvent event) {
+        String messageContent = event.getMessage().getContentStripped();
         if (messageContent.startsWith(COMMAND)) {
             //respond to message here
             event.getChannel().sendMessage("Sending a message to the channel");

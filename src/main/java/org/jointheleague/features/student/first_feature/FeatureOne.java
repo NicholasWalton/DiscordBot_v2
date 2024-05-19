@@ -1,6 +1,6 @@
 package org.jointheleague.features.student.first_feature;
 
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 import org.jointheleague.features.abstract_classes.Feature;
 import org.jointheleague.features.templates.FeatureTemplate;
@@ -21,8 +21,8 @@ public class FeatureOne extends FeatureTemplate {
     }
 //IGNORE
     @Override
-    public void handle(MessageCreateEvent event) {
-        String messageContent = event.getMessageContent();
+    public void handle(MessageReceivedEvent event) {
+        String messageContent = event.getMessage().getContentStripped();
         if (messageContent.startsWith(COMMAND)) {
             //respond to message here
             Random ran = new Random();

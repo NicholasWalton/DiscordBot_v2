@@ -1,7 +1,8 @@
 package org.jointheleague.features.student.first_feature;
 
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 import org.jointheleague.features.templates.FeatureTemplate;
 import org.junit.jupiter.api.AfterEach;
@@ -28,10 +29,13 @@ public class FeatureOneTest {
     private final PrintStream originalOut = System.out;
 
     @Mock
-    private MessageCreateEvent messageCreateEvent;
+    private MessageReceivedEvent messageCreateEvent;
 
     @Mock
-    private TextChannel textChannel;
+    private MessageChannelUnion textChannel;
+
+    @Mock
+    private Message message;
 
     @BeforeEach
     void setUp() {
@@ -72,7 +76,8 @@ public class FeatureOneTest {
     void itShouldHandleMessagesWithCommand() {
         //Given
         HelpEmbed helpEmbed = new HelpEmbed(featureOne.COMMAND, "test");
-        when(messageCreateEvent.getMessageContent()).thenReturn(featureOne.COMMAND);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(featureOne.COMMAND);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -86,7 +91,8 @@ public class FeatureOneTest {
     void itShouldNotHandleMessagesWithoutCommand() {
         //Given
         String command = "";
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
 
         //When
         featureOne.handle(messageCreateEvent);

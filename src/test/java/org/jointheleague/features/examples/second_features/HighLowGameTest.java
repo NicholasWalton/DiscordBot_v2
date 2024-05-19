@@ -1,7 +1,8 @@
 package org.jointheleague.features.examples.second_features;
 
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,10 +25,13 @@ public class HighLowGameTest {
     private final PrintStream originalOut = System.out;
 
     @Mock
-    private MessageCreateEvent messageCreateEvent;
+    private MessageReceivedEvent messageCreateEvent;
 
     @Mock
-    private TextChannel textChannel;
+    private MessageChannelUnion textChannel;
+
+    @Mock
+    private Message message;
 
     @BeforeEach
     void setUp() {
@@ -62,7 +66,8 @@ public class HighLowGameTest {
     void itShouldHandleMessagesWithCommand() {
         //Given
         HelpEmbed helpEmbed = new HelpEmbed(highLowGame.COMMAND, "test");
-        when(messageCreateEvent.getMessageContent()).thenReturn(highLowGame.COMMAND);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(highLowGame.COMMAND);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -76,7 +81,8 @@ public class HighLowGameTest {
     void itShouldNotHandleMessagesWithoutCommand() {
         //Given
         String command = "";
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
 
         //When
         highLowGame.handle(messageCreateEvent);
@@ -114,7 +120,8 @@ public class HighLowGameTest {
     void itShouldNotAcceptGuessIfGameIsNotStarted() {
         //Given
         String command = "!highLow 5";
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -131,7 +138,8 @@ public class HighLowGameTest {
         int guess = 1;
         String command = "!highLow " + guess;
         highLowGame.numberToGuess = 100;
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -148,7 +156,8 @@ public class HighLowGameTest {
         int guess = 100;
         String command = "!highLow " + guess;
         highLowGame.numberToGuess = 1;
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -165,7 +174,8 @@ public class HighLowGameTest {
         int guess = 100;
         String command = "!highLow " + guess;
         highLowGame.numberToGuess = 100;
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -181,7 +191,8 @@ public class HighLowGameTest {
         String guess = "ten";
         String command = "!highLow " + guess;
         highLowGame.numberToGuess = 100;
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When

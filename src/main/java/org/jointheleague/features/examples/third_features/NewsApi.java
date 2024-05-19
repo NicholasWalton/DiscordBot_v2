@@ -1,6 +1,6 @@
 package org.jointheleague.features.examples.third_features;
 
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.abstract_classes.Feature;
 import org.jointheleague.features.examples.third_features.plain_old_java_objects.news_api.ApiExampleWrapper;
 import org.jointheleague.features.examples.third_features.plain_old_java_objects.news_api.Article;
@@ -29,8 +29,8 @@ public class NewsApi extends Feature {
     }
 
     @Override
-    public void handle(MessageCreateEvent event) {
-        String messageContent = event.getMessageContent();
+    public void handle(MessageReceivedEvent event) {
+        String messageContent = event.getMessage().getContentStripped();
         if (messageContent.startsWith(COMMAND)) {
             messageContent = messageContent
                     .replace(COMMAND, "")

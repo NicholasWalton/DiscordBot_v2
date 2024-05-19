@@ -1,7 +1,8 @@
 package org.jointheleague.features.examples.first_features;
 
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.help_embed.plain_old_java_objects.help_embed.HelpEmbed;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,10 +25,13 @@ public class CurrentTimeTest {
     private final PrintStream originalOut = System.out;
 
     @Mock
-    private MessageCreateEvent messageCreateEvent;
+    private MessageReceivedEvent messageCreateEvent;
 
     @Mock
-    private TextChannel textChannel;
+    private MessageChannelUnion textChannel;
+
+    @Mock
+    private Message message;
 
     @BeforeEach
     void setUp() {
@@ -62,7 +66,8 @@ public class CurrentTimeTest {
     void itShouldHandleMessagesWithCommand() {
         //Given
         HelpEmbed helpEmbed = new HelpEmbed(currentTime.COMMAND, "test");
-        when(messageCreateEvent.getMessageContent()).thenReturn(currentTime.COMMAND);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(currentTime.COMMAND);
         when(messageCreateEvent.getChannel()).thenReturn((textChannel));
 
         //When
@@ -76,7 +81,8 @@ public class CurrentTimeTest {
     void itShouldNotHandleMessagesWithoutCommand() {
         //Given
         String command = "";
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
 
         //When
         currentTime.handle(messageCreateEvent);

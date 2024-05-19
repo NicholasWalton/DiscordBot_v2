@@ -1,7 +1,8 @@
 package org.jointheleague.features.examples.third_features;
 
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.event.message.MessageCreateEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.unions.MessageChannelUnion;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jointheleague.features.examples.third_features.plain_old_java_objects.cat_facts_api.CatWrapper;
 import org.jointheleague.features.examples.third_features.plain_old_java_objects.news_api.ApiExampleWrapper;
 import org.jointheleague.features.examples.third_features.plain_old_java_objects.news_api.Article;
@@ -36,10 +37,13 @@ public class CatFactsApiTest {
     private final PrintStream originalOut = System.out;
 
     @Mock
-    private MessageCreateEvent messageCreateEvent;
+    private MessageReceivedEvent messageCreateEvent;
 
     @Mock
-    private TextChannel textChannel;
+    private MessageChannelUnion textChannel;
+
+    @Mock
+    private Message message;
 
     @Mock
     WebClient webClientMock;
@@ -120,7 +124,8 @@ public class CatFactsApiTest {
         CatWrapper catWrapper = new CatWrapper();
         catWrapper.setData(data);
 
-        when(messageCreateEvent.getMessageContent()).thenReturn(catFactsApi.COMMAND);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(catFactsApi.COMMAND);
         when(messageCreateEvent.getChannel()).thenReturn(textChannel);
 
         when(webClientMock.get())
@@ -144,7 +149,8 @@ public class CatFactsApiTest {
     void givenMessageWithoutCommand_whenHandle_thenDoNothing() {
         //Given
         String command = "";
-        when(messageCreateEvent.getMessageContent()).thenReturn(command);
+        when(messageCreateEvent.getMessage()).thenReturn(message);
+        when(message.getContentStripped()).thenReturn(command);
 
         //When
         catFactsApi.handle(messageCreateEvent);
